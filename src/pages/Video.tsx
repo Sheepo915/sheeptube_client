@@ -4,20 +4,28 @@ import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
 import VideoPlayer from "@/components/VideoPlayer";
 import { DownloadIcon, HeartIcon, Share2Icon } from "lucide-react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
 export default function Video() {
-  const [searchParams, setSearchParam] = useSearchParams();
+  const [searchParams] = useSearchParams();
+  const [videoSrc, setVideoSrc] = useState<string>("");
 
   useEffect(() => {
-    console.log(searchParams.get("s"));
+    const src = searchParams.get("v");
+    if (src !== null) {
+      setVideoSrc(src);
+    }
   }, [searchParams]);
 
   return (
     <section className="grid grid-cols-[0.7fr_0.3fr] grid-rows-2 grid-flow-col-dense gap-x-5 gap-y-2 px-3 pt-2">
       <AspectRatio ratio={16 / 9}>
-        <VideoPlayer src="" poster="https://placehold.co/1920x1080" className="h-full w-full" />
+        <VideoPlayer
+          src={videoSrc}
+          poster="https://placehold.co/1920x1080"
+          className="h-full w-full"
+        />
       </AspectRatio>
       <Skeleton className="h-full w-full row-span-full" />
       <div className="flex flex-col h-36">

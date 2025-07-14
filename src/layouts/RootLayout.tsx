@@ -9,10 +9,10 @@ export default function RootLayout() {
     <SidebarProvider>
       <AppSidebar />
       <SidebarInset className="relative">
-        <main>
+        <>
           <AppHeader className="sticky top-0 z-50" />
           <Outlet />
-        </main>
+        </>
       </SidebarInset>
     </SidebarProvider>
   );

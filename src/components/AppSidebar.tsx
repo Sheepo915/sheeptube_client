@@ -54,10 +54,10 @@ export default function AppSidebar({ ...props }: React.ComponentProps<typeof Sid
                     <SidebarMenuItem key={item.title}>
                       <SidebarMenuButton
                         asChild
-                        isActive={location.pathname === item.path}
+                        isActive={location.pathname === route.path + "/" + item.path}
                         className="data-[slot=sidebar-menu-button]:!p-1.5"
                       >
-                        <Link to={item.path as string}>
+                        <Link to={(route.path + "/" + item.path) as string}>
                           {item.Icon && <item.Icon className="!size-5" />}
                           <span className="text-base ">{item.title}</span>
                         </Link>

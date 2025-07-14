@@ -1,6 +1,8 @@
+import Channel from "@/pages/Channel";
 import Home from "@/pages/Home";
+import UploadVideo from "@/pages/UploadVideo";
 import Video from "@/pages/Video";
-import { HomeIcon, VideoIcon, type LucideIcon } from "lucide-react";
+import { AppWindowIcon, HomeIcon, VideoIcon, type LucideIcon } from "lucide-react";
 import type { RouteObject } from "react-router-dom";
 
 type RouteObjectWithTitle = RouteObject & {
@@ -28,10 +30,30 @@ let routes: Routes[] = [
   },
   {
     title: "Video",
-    path: "/video",
+    path: "video",
     shown: false,
     element: <Video />,
     Icon: VideoIcon,
+  },
+  {
+    title: "Channel",
+    path: "channel",
+    shown: true,
+    items: [
+      {
+        title: "Page",
+        path: "page",
+        shown: true,
+        element: <Channel />,
+        Icon: AppWindowIcon,
+      },
+      {
+        title: "New Video",
+        path: "video",
+        element: <UploadVideo />,
+        shown: false,
+      },
+    ],
   },
 ];
 
