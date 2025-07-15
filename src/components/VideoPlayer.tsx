@@ -9,18 +9,47 @@ export default function VideoPlayer({ src, ...props }: VideoPlayerProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
-    const hls = new Hls({
-      debug: true,
-    });
+    const video = videoRef.current;
 
-    if (Hls.isSupported() && videoRef != null) {
+    if (!video) return
+
+    let hls: Hls;
+
+    if (video.canPlayType("application/vnd.apple.mpegurl")) {
+      video.src = src;
+    } else if (Hls.isSupported()) {
+      hls = new Hls({
+        debug: true,
+      });
       hls.loadSource(src);
       hls.attachMedia(videoRef.current as HTMLVideoElement);
-      hls.on(Hls.Events.ERROR, (err) => {
-        console.log(err);
+
+      hls.on(Hls.Events.ERROR, (_, data) => {
+        if (data.fatal) {
+          switch (data.type) {
+            case Hls.ErrorTypes.NETWORK_ERROR:
+              console.error("Fatal network error. Try to recover.");
+              hls.startLoad();
+              break;
+            case Hls.ErrorTypes.MEDIA_ERROR:
+              console.error("Fatal media error. Try to recover.");
+              hls.recoverMediaError();
+              break;
+            default:
+              console.error("Unrecoverable error. Destroying HLS.");
+              hls.destroy();
+              break;
+          }
+        }
       });
     } else {
       console.log("load");
+    }
+
+    return () => {
+      if (hls) {
+        hls.destroy();
+      }
     }
   }, [src]);
 
