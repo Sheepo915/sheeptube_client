@@ -22,15 +22,18 @@ import {
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
-import { Image } from "lucide-react";
+import { Image, Upload } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { VideoUploadSchema, type VideoUploadSchemaType } from "@/schemas";
+import { VideoMetadataSchema, VideoUploadSchema, type VideoMetadataSchemaType, type VideoUploadSchemaType } from "@/schemas";
 import { MultiSelect } from "@/components/ui/multi-select";
 import AddTagsDialog from "@/components/AddTagDialog";
 import AddModelDialog from "@/components/AddModelDialog";
 import VideoPlayer from "@/components/VideoPlayer";
+import { Dialog } from "@radix-ui/react-dialog";
+import { DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import UploadVideoDialog from "@/components/UploadVideoDialog";
 
 const alertContents = {
   thumbnail: {
@@ -63,9 +66,9 @@ const models = [
 type AlertType = "thumbnail" | "video" | null;
 
 export default function UploadVideo() {
-  const { formState, ...form } = useForm<VideoUploadSchemaType>({
-    resolver: zodResolver(VideoUploadSchema),
-  });
+  const { formState, ...form } = useForm<VideoMetadataSchemaType>({
+    resolver: zodResolver(VideoMetadataSchema),
+  })
 
   const thumbnailRef = useRef<HTMLInputElement>(null);
   const videoRef = useRef<HTMLInputElement>(null);
@@ -87,6 +90,7 @@ export default function UploadVideo() {
       return URL.createObjectURL(video as File);
     }
   }, [video]);
+
 
   function onThumbnailUploadClick() {
     if (thumbnail) {
@@ -130,7 +134,11 @@ export default function UploadVideo() {
     }
   }
 
-  function onSubmit(data: VideoUploadSchemaType) {
+  function onVideoSubmit(data: VideoUploadSchemaType) {
+
+  }
+
+  function onSubmit(data: VideoMetadataSchemaType) {
     console.log(data, thumbnail, videoPreview);
   }
 
@@ -154,6 +162,7 @@ export default function UploadVideo() {
         <Separator />
         <div className="flex-1 grid grid-cols-[0.5fr_min-content_0.5fr] grid-rows-1 gap-x-3 overflow-scroll">
           <div>
+            <UploadVideoDialog />
             <Form formState={formState} {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-1 gap-y-2.5">
                 {
@@ -248,56 +257,6 @@ export default function UploadVideo() {
                           </FormItem>
                         )}
                       />
-                      <FormItem>
-                        <FormField
-                          control={form.control}
-                          name="video"
-                          render={({ field }) => (
-                            <InputGroup>
-                              <FormLabel>Upload your video</FormLabel>
-                              <div className="flex gap-x-3">
-                                <div className="w-64 cursor-pointer" onClick={onVideoUploadClick}>
-                                  <AspectRatio
-                                    ratio={16 / 9}
-                                    className="flex flex-col justify-center items-center px-12 outline-1 outline-gray-200 rounded-lg"
-                                  >
-                                    <Image className="size-6" />
-                                    <span className="font-thin text-sm text-center">Upload your video</span>
-                                  </AspectRatio>
-                                </div>
-                                {video && (
-                                  <div className="w-64">
-                                    <AspectRatio
-                                      ratio={16 / 9}
-                                      className="flex justify-center items-center overflow-hidden bg-black outline-1 outline-gray-200 rounded-lg"
-                                    >
-                                      <video
-                                        src={videoPreview}
-                                        disablePictureInPicture
-                                        controls={false}
-                                        autoPlay={false}
-                                      />
-                                    </AspectRatio>
-                                  </div>
-                                )}
-                              </div>
-                              {video && <FormDescription>{(video as File).name}</FormDescription>}
-                              <Input
-                                {...form.register("video")}
-                                ref={videoRef}
-                                type="file"
-                                id="thumbnail"
-                                accept="video/*"
-                                hidden
-                                disabled={field.disabled}
-                                name={field.name}
-                                onBlur={field.onBlur}
-                                onChange={(e) => field.onChange(onVideoUpload(e))}
-                              />
-                            </InputGroup>
-                          )}
-                        />
-                      </FormItem>
                       <Button type="button" onClick={() => setFormSteps(1)}>Continue</Button>
                     </>
                   )
@@ -347,7 +306,9 @@ export default function UploadVideo() {
           </div>
           <Separator orientation="vertical" />
           <div className="w-full space-y-1">
-            <p className="text-lg leading-none font-semibold">Preview</p>
+            {
+
+            }
             <VideoPlayer
               src={videoPreview ?? ""}
               // controls={videoPreview ? true : false}
