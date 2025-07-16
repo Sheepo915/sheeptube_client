@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Separator } from "@/components/ui/separator";
 import { twMerge } from "tailwind-merge";
 import { useEffect, useState } from "react";
-import VideoPlayer from "@/components/VideoPlayer";
+import VideoPlayer from "@/components/video/VideoPlayer";
 
 interface VideoShowcaseProps extends React.HTMLAttributes<HTMLDivElement> {
   title: string;

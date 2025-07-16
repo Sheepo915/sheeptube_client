@@ -1,8 +1,10 @@
+import Categories from "@/pages/Categories";
 import Channel from "@/pages/Channel";
 import Home from "@/pages/Home";
+import Models from "@/pages/Models";
 import UploadVideo from "@/pages/UploadVideo";
 import Video from "@/pages/Video";
-import { AppWindowIcon, HomeIcon, VideoIcon, type LucideIcon } from "lucide-react";
+import { AppWindowIcon, Folder, HomeIcon, Users, VideoIcon, type LucideIcon } from "lucide-react";
 import type { RouteObject } from "react-router-dom";
 
 type RouteObjectWithTitle = RouteObject & {
@@ -52,6 +54,34 @@ let routes: Routes[] = [
         path: "video",
         element: <UploadVideo />,
         shown: false,
+      },
+    ],
+  },
+  {
+    title: "Model",
+    path: "model",
+    shown: true,
+    items: [
+      {
+        title: "Models",
+        path: "",
+        shown: true,
+        element: <Models />,
+        Icon: Users,
+      },
+    ],
+  },
+  {
+    title: "Category",
+    path: "model",
+    shown: true,
+    items: [
+      {
+        title: "Categories",
+        path: "",
+        shown: true,
+        element: <Categories />,
+        Icon: Folder,
       },
     ],
   },

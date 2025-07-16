@@ -2,7 +2,7 @@ import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
-import VideoPlayer from "@/components/VideoPlayer";
+import VideoPlayer from "@/components/video/VideoPlayer";
 import { DownloadIcon, HeartIcon, Share2Icon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";

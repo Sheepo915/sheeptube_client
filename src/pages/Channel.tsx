@@ -1,6 +1,6 @@
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
-import VideoShowcase from "@/components/VideoShowcase";
+import VideoShowcase from "@/components/video/VideoShowcase";
 import { Bell, Search } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";

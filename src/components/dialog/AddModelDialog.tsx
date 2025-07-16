@@ -2,14 +2,14 @@ import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, Di
 import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
 import { Form, FormControl, FormField, FormLabel } from "@/components/ui/form";
-import { AddTagSchema, type AddTagSchemaType } from "@/schemas";
+import { AddModelSchema, type AddModelSchemaType } from "@/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
-import InputGroup from "./InputGroup";
+import InputGroup from "../form/InputGroup";
 
-export default function AddTagsDialog() {
-  const { formState, ...form } = useForm<AddTagSchemaType>({
-    resolver: zodResolver(AddTagSchema),
+export default function AddModelDialog() {
+  const { formState, ...form } = useForm<AddModelSchemaType>({
+    resolver: zodResolver(AddModelSchema),
   });
 
   function onSubmit() {
@@ -21,24 +21,24 @@ export default function AddTagsDialog() {
       <Form formState={formState} {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <DialogTrigger asChild>
-            <Button variant="outline">Add Tag</Button>
+            <Button variant="outline">Add Model</Button>
           </DialogTrigger>
           <DialogContent className="sm:max-w-[425px]">
             <DialogHeader>
-              <DialogTitle>Add A New Tag</DialogTitle>
+              <DialogTitle>Add A New Model</DialogTitle>
               <DialogDescription>
-                Add a new tag for your video, it will also be publicly available for everyone.
+                Add a new model for your video, it will also be publicly available for everyone.
               </DialogDescription>
             </DialogHeader>
             <div className="grid gap-4">
               <FormField
-                name="tag"
+                name="model"
                 control={form.control}
                 render={({ field }) => (
                   <InputGroup>
-                    <FormLabel>Tag</FormLabel>
+                    <FormLabel>Model</FormLabel>
                     <FormControl>
-                      <Input placeholder="Tag" {...field} />
+                      <Input placeholder="Model" {...field} />
                     </FormControl>
                   </InputGroup>
                 )}

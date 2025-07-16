@@ -17,6 +17,7 @@
     "@radix-ui/react-dropdown-menu": "^2.1.15",
     "@radix-ui/react-label": "^2.1.7",
     "@radix-ui/react-popover": "^1.1.14",
+    "@radix-ui/react-progress": "^1.1.7",
     "@radix-ui/react-select": "^2.2.5",
     "@radix-ui/react-separator": "^1.1.7",
     "@radix-ui/react-slot": "^1.2.3",
@@ -29,6 +30,7 @@
     "hls.js": "^1.0.3-0.canary.7275",
     "lucide-react": "^0.525.0",
     "motion": "^12.23.3",
+    "motion-plus": "^1.4.1",
     "next-themes": "^0.4.6",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
@@ -38,7 +40,8 @@
     "tailwind-merge": "^3.3.1",
     "tailwindcss": "^4.1.11",
     "zod": "^4.0.5",
-    "zustand": "^5.0.6"
+    "zustand": "^5.0.6",
+    "zustand-persist": "^0.4.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.30.1",

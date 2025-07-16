@@ -1,4 +1,4 @@
-import VideoShowcase from "@/components/VideoShowcase";
+import VideoShowcase from "@/components/video/VideoShowcase";
 import { useNavigate } from "react-router-dom";
 
 const test = [

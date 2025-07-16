@@ -1,5 +1,5 @@
 import { User2Icon } from "lucide-react";
-import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "./ui/sidebar";
+import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "../ui/sidebar";
 import {
   DropdownMenu,
   DropdownMenuContent,

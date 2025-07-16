@@ -15,13 +15,18 @@ createRoot(document.getElementById("root")!).render(
             if ("items" in (route as NavWithGroup)) {
               return (
                 <Route path={route.path}>
-                  {(route as NavWithGroup).items.map((subRoute) => (
-                    <Route
-                      index={subRoute.index || false}
-                      path={subRoute.path}
-                      element={subRoute.element}
-                    />
-                  ))}
+                  {(route as NavWithGroup).items
+                    .filter((subRoute) => subRoute.shown === true)
+                    .map((subRoute) => {
+                      console.log(subRoute);
+                      return (
+                        <Route
+                          index={subRoute.index || false}
+                          path={subRoute.path}
+                          element={subRoute.element}
+                        />
+                      );
+                    })}
                 </Route>
               );
             } else {

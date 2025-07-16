@@ -1,4 +1,4 @@
-import AppBreadcrumb from "@/components/AppBreadcrumb";
+import AppBreadcrumb from "@/components/app/AppBreadcrumb";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Separator } from "@/components/ui/separator";
 import { twMerge } from "tailwind-merge";
