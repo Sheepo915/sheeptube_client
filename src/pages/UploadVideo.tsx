@@ -22,28 +22,19 @@ import {
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
-import { Image, Upload } from "lucide-react";
+import { Image } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { VideoMetadataSchema, VideoUploadSchema, type VideoMetadataSchemaType, type VideoUploadSchemaType } from "@/schemas";
+import { VideoMetadataSchema, type VideoMetadataSchemaType } from "@/schemas";
 import { MultiSelect } from "@/components/ui/multi-select";
 import AddTagsDialog from "@/components/AddTagDialog";
 import AddModelDialog from "@/components/AddModelDialog";
-import VideoPlayer from "@/components/VideoPlayer";
-import { Dialog } from "@radix-ui/react-dialog";
-import { DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import UploadVideoDialog from "@/components/UploadVideoDialog";
 
 const alertContents = {
-  thumbnail: {
-    title: "Replace thumbnail?",
-    content: "You’re about to replace your previously uploaded thumbnail. Continue?",
-  },
-  video: {
-    title: "Replace video?",
-    content: "You’re about to replace your previously uploaded video file. Continue?",
-  },
+  title: "Replace thumbnail?",
+  content: "You’re about to replace your previously uploaded thumbnail. Continue?",
 };
 
 const tags = [
@@ -62,20 +53,15 @@ const models = [
   { label: "Model E", value: "model_e" },
 ]
 
-
-type AlertType = "thumbnail" | "video" | null;
-
 export default function UploadVideo() {
   const { formState, ...form } = useForm<VideoMetadataSchemaType>({
     resolver: zodResolver(VideoMetadataSchema),
   })
 
   const thumbnailRef = useRef<HTMLInputElement>(null);
-  const videoRef = useRef<HTMLInputElement>(null);
   const [thumbnail, setThumbnail] = useState<File>();
-  const [video, setVideo] = useState<File>();
   const [showReplaceDialog, setShowReplaceDialog] = useState(false);
-  const [alertContent, setAlertContent] = useState<AlertType>(null);
+  const [showAlert, setShowAlert] = useState<boolean>(false);
 
   const [formSteps, setFormSteps] = useState<number>(0);
 
@@ -85,39 +71,22 @@ export default function UploadVideo() {
     }
   }, [thumbnail]);
 
-  const videoPreview = useMemo(() => {
-    if (video) {
-      return URL.createObjectURL(video as File);
-    }
-  }, [video]);
-
-
   function onThumbnailUploadClick() {
     if (thumbnail) {
-      setAlertContent("thumbnail");
+      setShowAlert(true);
       setShowReplaceDialog(true);
     } else {
       thumbnailRef.current?.click();
     }
   }
 
-  function onVideoUploadClick() {
-    if (video) {
-      setAlertContent("video");
-      setShowReplaceDialog(true);
-    } else {
-      videoRef.current?.click();
-    }
-  }
 
   function onConfirmReplace() {
     setShowReplaceDialog(false);
-    if (alertContent === "thumbnail") {
+    if (showAlert) {
       setTimeout(() => thumbnailRef.current?.click(), 100);
-    } else if (alertContent === "video") {
-      setTimeout(() => videoRef.current?.click(), 100);
     }
-    setAlertContent(null);
+    setShowAlert(false);
   }
 
   function onThumbnailUpload(e: React.ChangeEvent<HTMLInputElement>): File | void {
@@ -127,19 +96,9 @@ export default function UploadVideo() {
     }
   }
 
-  function onVideoUpload(e: React.ChangeEvent<HTMLInputElement>): File | void {
-    if (e.target.files) {
-      setVideo(e.target.files[0]);
-      return e.target.files[0]
-    }
-  }
-
-  function onVideoSubmit(data: VideoUploadSchemaType) {
-
-  }
 
   function onSubmit(data: VideoMetadataSchemaType) {
-    console.log(data, thumbnail, videoPreview);
+    console.log(data, thumbnail);
   }
 
   useEffect(() => {
@@ -147,11 +106,8 @@ export default function UploadVideo() {
       if (thumbnailPreview) {
         URL.revokeObjectURL(thumbnailPreview as string);
       }
-      if (videoPreview) {
-        URL.revokeObjectURL(videoPreview as string);
-      }
     };
-  }, [thumbnailPreview, videoPreview]);
+  }, [thumbnailPreview]);
 
   console.log(form.watch())
 
@@ -309,22 +265,15 @@ export default function UploadVideo() {
             {
 
             }
-            <VideoPlayer
-              src={videoPreview ?? ""}
-              // controls={videoPreview ? true : false}
-              poster={thumbnailPreview ?? "https://placehold.co/1920x1080"}
-              className="w-full" />
-            <p>{form.getValues("title")}</p>
-            <p>{form.getValues("description")}</p>
           </div>
         </div>
       </section >
-      {alertContent && (
+      {showAlert && (
         <AlertDialog open={showReplaceDialog} onOpenChange={setShowReplaceDialog}>
           <AlertDialogContent>
             <AlertDialogHeader>
-              <AlertDialogTitle>{alertContents[alertContent].title}</AlertDialogTitle>
-              <AlertDialogDescription>{alertContents[alertContent].content}</AlertDialogDescription>
+              <AlertDialogTitle>{alertContents.title}</AlertDialogTitle>
+              <AlertDialogDescription>{alertContents.content}</AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
               <AlertDialogCancel>Cancel</AlertDialogCancel>

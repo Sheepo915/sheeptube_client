@@ -6,7 +6,7 @@ import { VideoUploadSchema, type VideoUploadSchemaType } from "@/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AlertTriangle, Loader2, Upload } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import axios from "axios"
 import type { DialogProps } from "@radix-ui/react-dialog";
 import { Button } from "@/components/ui/button";
@@ -43,6 +43,14 @@ export default function UploadVideoDialog({ ...props }: UploadVideoDialogProps) 
   function onDivClick() {
     if (videoRef.current !== null) {
       videoRef.current.click()
+    }
+  }
+
+  function onDivKeyDown(e: React.KeyboardEvent<HTMLDivElement>) {
+    e.preventDefault()
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      onDivClick();
     }
   }
 
@@ -122,8 +130,6 @@ export default function UploadVideoDialog({ ...props }: UploadVideoDialogProps) 
     };
   }, [videoPreview]);
 
-  console.log(formState.errors.video)
-
   return (
     <Dialog defaultOpen {...props}>
       <DialogContent className={twMerge("!max-w-[70vw]", props?.className)} showCloseButton={false} onInteractOutside={(e) => { e.preventDefault() }}>
@@ -139,8 +145,10 @@ export default function UploadVideoDialog({ ...props }: UploadVideoDialogProps) 
                 name="video"
                 render={({ field }) =>
                   <FormItem
-                    className="flex flex-col flex-1 items-center justify-center gap-y-1 h-full border border-gray-400 border-dashed rounded-lg overflow-hidden"
+                    tabIndex={0}
+                    className="flex flex-col flex-1 items-center justify-center gap-y-1 h-full border border-gray-400 border-dashed rounded-lg overflow-hidden ring-offset-background focus:ring-ring focus:ring-2 focus:ring-offset-2 focus:outline-hidden"
                     onClick={onDivClick}
+                    onKeyDown={onDivKeyDown}
                     onDrop={onVideoDrop(field)}
                     onDragOver={(e) => e.preventDefault()}>
                     {
