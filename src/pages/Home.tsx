@@ -220,8 +220,9 @@ export default function Home() {
           poster={data.poster}
           source={data.videoSrc}
           views={data.views}
-          channel_name={data.channel.name}
-          channel_pic={data.channel.pic}
+          channelName={data.channel.name}
+          channelPic={data.channel.pic}
+          showChannelInfo
           onClick={() => OnVideoClick(data.videoSrc)}
         />
       ))}

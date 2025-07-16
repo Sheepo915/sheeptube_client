@@ -10,8 +10,9 @@ interface VideoShowcaseProps extends React.HTMLAttributes<HTMLDivElement> {
   poster: string;
   source: string;
   views: number;
-  channel_name: string;
-  channel_pic: string;
+  channelName: string;
+  channelPic: string;
+  showChannelInfo?: boolean;
 }
 
 export default function VideoShowcase({
@@ -19,8 +20,9 @@ export default function VideoShowcase({
   poster,
   source,
   views,
-  channel_name,
-  channel_pic,
+  channelName,
+  channelPic,
+  showChannelInfo = false,
   ...props
 }: VideoShowcaseProps) {
   const [isPlaying, setPlay] = useState<boolean>(false);
@@ -54,20 +56,37 @@ export default function VideoShowcase({
         {isPlaying ? <VideoPlayer src={source} controls={false} autoPlay /> : <img src={poster} />}
       </AspectRatio>
       <div className="grid grid-cols-[auto_1fr] grid-rows-1 grid-flow-col-dense space-x-2 justify-center">
-        <img src={channel_pic} className="size-14 rounded-full self-center" />
-        <div className="flex flex-col">
-          <Link to={"/"} className="font-semibold">
-            {title}
-          </Link>
-          <Link to={"/"} className="font-light">
-            {channel_name}
-          </Link>
-          <div className="flex space-x-1.5 font-extralight text-[10pt]">
-            <span>{views} views</span>
-            <Separator orientation="vertical" />
-            <span>10 hours ago</span>
-          </div>
-        </div>
+        {showChannelInfo ? (
+          <>
+            <img src={channelPic} className="size-14 rounded-full self-center" />
+            <div className="flex flex-col">
+              <Link to={"/"} className="font-semibold">
+                {title}
+              </Link>
+              <Link to={"/"} className="font-light">
+                {channelName}
+              </Link>
+              <div className="flex space-x-1.5 font-extralight text-[10pt]">
+                <span>{views} views</span>
+                <Separator orientation="vertical" />
+                <span>10 hours ago</span>
+              </div>
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="flex flex-col">
+              <Link to={"/"} className="font-semibold">
+                {title}
+              </Link>
+              <div className="flex space-x-1.5 font-extralight text-[10pt]">
+                <span>{views} views</span>
+                <Separator orientation="vertical" />
+                <span>10 hours ago</span>
+              </div>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
