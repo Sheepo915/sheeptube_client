@@ -132,7 +132,12 @@ export default function UploadVideoDialog({ ...props }: UploadVideoDialogProps) 
 
   return (
     <Dialog defaultOpen {...props}>
-      <DialogContent className={twMerge("!max-w-[70vw]", props?.className)} showCloseButton={false} onInteractOutside={(e) => { e.preventDefault() }}>
+      <DialogContent
+        className={twMerge("!max-w-[70vw]", props?.className)}
+        showCloseButton={false}
+        onInteractOutside={(e) => { e.preventDefault() }}
+        onEscapeKeyDown={(e) => { e.preventDefault() }}
+      >
         <DialogHeader>
           <DialogTitle>Upload your video</DialogTitle>
           <DialogDescription>Share your video with the public</DialogDescription>
