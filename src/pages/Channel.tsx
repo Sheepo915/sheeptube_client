@@ -2,10 +2,11 @@ import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import VideoShowcase from "@/components/video/VideoShowcase";
 import { Bell, Search } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { useBreadcrumbStore } from "@/stores/useBreadcrumbStore";
 
 const test = [
   {
@@ -214,7 +215,9 @@ const MotionInput = motion(Input);
 const MotionBell = motion(Bell);
 
 export default function Channel() {
+  const { hydrateBreadcrumb, reset } = useBreadcrumbStore();
   const navigate = useNavigate();
+  const location = useLocation();
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
   const [isSubscribed, setSubscribed] = useState<boolean>(false);
 
@@ -225,6 +228,14 @@ export default function Channel() {
   function OnSubscriptionClick() {
     setSubscribed(true);
   }
+
+  useEffect(() => {
+    hydrateBreadcrumb({ path: location.pathname, name: "Test" });
+
+    return () => {
+      reset();
+    };
+  }, [location, hydrateBreadcrumb, reset]);
 
   return (
     <>
