@@ -1,40 +1,160 @@
+import Masonry from "@/components/common/Masonry";
+import { randomString } from "@/utils";
 import { useEffect, useState } from "react";
 
 const test = [
-  "Cooking Hacks",
-  "Urban Exploration",
-  "Tech Reviews",
-  "Historical Documentaries",
-  "DIY Home Projects",
-  "Gaming Walkthroughs",
-  "Street Interviews",
-  "Animation Shorts",
-  "Mindfulness & Meditation",
-  "Language Learning",
-  "Fashion Hauls",
-  "Sci-Fi Short Films",
-  "Comedy Skits",
-  "True Crime",
-  "Productivity Tips",
-  "Nature & Wildlife",
-  "Book Summaries",
-  "Martial Arts Tutorials",
-  "Drone Footage",
-  "Podcast Clips",
-  "Fitness Challenges",
-  "ASMR Relaxation",
-  "Live Music Performances",
-  "Vintage Commercials",
-  "Stop Motion Animation",
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
+  randomString(),
 ];
-
-function CategoryHeading(alp: string) {
-  return <p className="font-bold">{alp}</p>;
-}
-
-function CategoryName(name: string) {
-  return <li>{name}</li>;
-}
+/**
+ * {Object.entries(grouped).map(([letter, items]) => (
+          <div key={letter}>
+            <p className="font-bold text-lg">{letter}</p>
+            <ul className="ml-4 list-disc">
+              {items.map((name) => (
+                <li key={name}>{name}</li>
+              ))}
+            </ul>
+          </div>
+        ))}
+ */
 
 export default function Categories() {
   const [grouped, setGrouped] = useState<Record<string, string[]>>({});
@@ -59,18 +179,23 @@ export default function Categories() {
       <div>
         <h1>Categories</h1>
       </div>
-      <div>
-        {Object.entries(grouped).map(([letter, items]) => (
-          <div key={letter}>
-            <p className="font-bold text-lg">{letter}</p>
-            <ul className="ml-4 list-disc">
-              {items.map((name) => (
-                <li key={name}>{name}</li>
+      <Masonry
+        data={Object.entries(grouped)}
+        colNumber={3}
+        className=""
+        render={([k, v]) => (
+          <div key={k}>
+            <p className="font-semibold">{k}</p>
+            <ul className="px-4">
+              {v.map((s) => (
+                <li className="list-disc">
+                  <a className="cursor-pointer">{s}</a>
+                </li>
               ))}
             </ul>
           </div>
-        ))}
-      </div>
+        )}
+      />
     </section>
   );
 }

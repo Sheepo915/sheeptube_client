@@ -1,50 +1,51 @@
-import {useEffect, useRef, useState} from "react";
-import type {Pagintation} from "@/components/common/Pagination.tsx";
+import { useEffect, useState } from "react";
 
 export interface Pagination {
   total: number;
   offset: number;
   start: number;
   end: number;
+  itemsPerPage: number;
+  // rawTotal: number;
 }
 
 interface UsePaginationProps<T> {
   data: T[];
-  defaultCols?: number;
-  itemHeight?: number;
+  itemsPerPage?: number;
 }
 
 interface UsePaginationResult<T> {
   paginated: T[];
   pagination: Pagination;
-  itemsPerPage: number;
-  handleNext: () => void
+  handleNext: () => void;
   handlePrev: () => void;
   handleFirst: () => void;
   handleLast: () => void;
 }
 
-export function usePagination<T>({data, defaultCols = 5, itemHeight = 100}: UsePaginationProps<T>): UsePaginationResult<T> {
-  const gridRef = useRef<HTMLDivElement>(null);
-
-  const [itemsPerPage, setItemsPerPage] = useState(10);
-  const [paginate, setPaginate] = useState<Pagintation>({
+export function usePagination<T>({
+  data,
+  itemsPerPage = 10,
+}: UsePaginationProps<T>): UsePaginationResult<T> {
+  const [paginate, setPaginate] = useState<Pagination>({
     total: data.length,
     offset: 0,
     start: 0,
     end: data.length,
+    itemsPerPage: Math.min(itemsPerPage, data.length),
+    // rawTotal: data.length,
   });
 
   const paginated = data.slice(paginate.start, paginate.end);
 
   function handleNext() {
     const newOffset = paginate.offset + itemsPerPage;
-    if (newOffset >= test.length) return;
+    if (newOffset >= data.length) return;
     setPaginate({
       ...paginate,
       offset: newOffset,
       start: newOffset,
-      end: Math.min(newOffset + itemsPerPage, test.length),
+      end: Math.min(newOffset + itemsPerPage, data.length),
     });
   }
 
@@ -54,7 +55,7 @@ export function usePagination<T>({data, defaultCols = 5, itemHeight = 100}: UseP
       ...paginate,
       offset: newOffset,
       start: newOffset,
-      end: newOffset + itemsPerPage,
+      end: Math.min(newOffset + itemsPerPage, data.length),
     });
   }
 
@@ -63,8 +64,8 @@ export function usePagination<T>({data, defaultCols = 5, itemHeight = 100}: UseP
       ...paginate,
       offset: 0,
       start: 0,
-      end: itemsPerPage
-    })
+      end: Math.min(itemsPerPage, data.length),
+    });
   }
 
   function handleLast() {
@@ -78,35 +79,18 @@ export function usePagination<T>({data, defaultCols = 5, itemHeight = 100}: UseP
   }
 
   useEffect(() => {
-    function calculateItemsPerPage() {
-      if (!gridRef.current) return;
-      const gridHeight = gridRef.current.offsetHeight;
-      const rows = Math.floor(gridHeight / itemHeight);
-      const visibleItems = rows * defaultCols;
-
-      setItemsPerPage(visibleItems || 1); // Avoid 0
-    }
-
-    calculateItemsPerPage();
-    window.addEventListener("resize", calculateItemsPerPage);
-
-    return () => window.removeEventListener("resize", calculateItemsPerPage);
-  }, [defaultCols, itemHeight]);
-
-  useEffect(() => {
     setPaginate({
-      total: paginated.length,
+      total: data.length,
       offset: 0,
       start: 0,
-      end: itemsPerPage,
+      end: Math.min(itemsPerPage, data.length),
+      itemsPerPage,
     });
-  }, [paginated.length, itemsPerPage]);
+  }, [data, itemsPerPage]);
 
   return {
     paginated,
-    paginate,
-    itemsPerPage,
-    gridRef,
+    pagination: paginate,
     handleNext,
     handlePrev,
     handleFirst,

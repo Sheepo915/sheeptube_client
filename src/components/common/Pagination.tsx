@@ -1,38 +1,28 @@
-import {Button} from "@/components/ui/button.tsx";
-import {ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight} from "lucide-react";
-
-export interface Pagination {
-  total: number;
-  offset: number;
-  start: number;
-  end: number;
-}
+import { Button } from "@/components/ui/button.tsx";
+import type { Pagination } from "@/hooks/use-pagination";
+import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from "lucide-react";
 
 interface PaginationProps {
-  paginate: Pagination,
-  itemsPerPage: number,
-  firstPageHandler: () => void,
-  previousPageHandler: () => void,
-  nextPageHandler: () => void,
-  lastPageHandler: () => void
+  paginate: Pagination;
+  firstPageHandler: () => void;
+  previousPageHandler: () => void;
+  nextPageHandler: () => void;
+  lastPageHandler: () => void;
 }
 
-export default function Pagination(
-  {
-    paginate,
-    itemsPerPage,
-    firstPageHandler,
-    previousPageHandler,
-    nextPageHandle,
-    lastPageHandler,
-  }: PaginationProps
-) {
-  const {total, start, end} = paginate;
+export default function Pagination({
+  paginate,
+  firstPageHandler,
+  previousPageHandler,
+  nextPageHandler,
+  lastPageHandler,
+}: PaginationProps) {
+  const { total, start, end, itemsPerPage } = paginate;
   const totalPages = Math.ceil(total / itemsPerPage);
-  const currentPage = start + 1;
+  const currentPage = Math.floor(start / itemsPerPage) + 1;
 
   const isFirstPage = start === 0;
-  const isLastPage = end === total;
+  const isLastPage = end >= total;
 
   return (
     <div className="flex w-full justify-end items-center gap-8">
@@ -47,27 +37,27 @@ export default function Pagination(
           disabled={isFirstPage}
         >
           <span className="sr-only">Go to first page</span>
-          <ChevronsLeft/>
-        </Button>
-        <Button
-          variant="outline"
-          className="size-8"
-          size="icon"
-          onClick={nextPageHandle}
-          disabled={isFirstPage}
-        >
-          <span className="sr-only">Go to previous page</span>
-          <ChevronLeft/>
+          <ChevronsLeft />
         </Button>
         <Button
           variant="outline"
           className="size-8"
           size="icon"
           onClick={previousPageHandler}
+          disabled={isFirstPage}
+        >
+          <span className="sr-only">Go to previous page</span>
+          <ChevronLeft />
+        </Button>
+        <Button
+          variant="outline"
+          className="size-8"
+          size="icon"
+          onClick={nextPageHandler}
           disabled={isLastPage}
         >
           <span className="sr-only">Go to next page</span>
-          <ChevronRight/>
+          <ChevronRight />
         </Button>
         <Button
           variant="outline"
@@ -77,7 +67,7 @@ export default function Pagination(
           disabled={isLastPage}
         >
           <span className="sr-only">Go to last page</span>
-          <ChevronsRight/>
+          <ChevronsRight />
         </Button>
       </div>
     </div>

@@ -1,27 +1,20 @@
-import {Suspense, useState} from "react";
+import { Suspense, useState } from "react";
 import ModelSuspense from "@/components/model/ModelSuspense.tsx";
 import Pagination from "@/components/common/Pagination.tsx";
-import {ModelHeader, ModelShowcase} from "@/components/model";
-import {usePagination} from "@/hooks";
+import { ModelHeader, ModelShowcase } from "@/components/model";
+import { usePagination } from "@/hooks";
+import type { ModelData } from "@/types/model";
+import { randomString } from "@/utils";
 
-
-const test = new Array(30).fill(1);
+const test: ModelData[] = new Array(30).fill({ id: Math.random() * 10, name: randomString(5) });
+const itemsPerPage = 10;
 
 export default function Models() {
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
-
   const [searchValue, setSearchValue] = useState<string>();
 
-  const {
-    paginated,
-    paginate,
-    itemsPerPage,
-    gridRef,
-    handleNext,
-    handlePrev,
-    handleFirst,
-    handleLast,
-  } = usePagination({data: test});
+  const { paginated, pagination, handleNext, handlePrev, handleFirst, handleLast } =
+    usePagination<ModelData>({ data: test, itemsPerPage: itemsPerPage });
 
   return (
     <section className="px-3 py-2 gap-y-2 max-h-full h-full w-full flex flex-col">
@@ -34,14 +27,13 @@ export default function Models() {
         }}
         onChange={(e) => setSearchValue(e.target.value)}
       />
-      <div ref={gridRef} className="grid grid-cols-5 gap-3 flex-grow">
-        <Suspense fallback={<ModelSuspense paginated={paginated}/>}>
-          <ModelShowcase/>
+      <div className="grid grid-cols-5 gap-3 flex-grow">
+        <Suspense fallback={<ModelSuspense paginated={paginated} />}>
+          <ModelShowcase models={paginated} />
         </Suspense>
       </div>
       <Pagination
-        paginate={paginate}
-        itemsPerPage={itemsPerPage}
+        paginate={pagination}
         firstPageHandler={handleFirst}
         previousPageHandler={handlePrev}
         nextPageHandler={handleNext}
