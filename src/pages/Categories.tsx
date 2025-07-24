@@ -1,6 +1,7 @@
 import Masonry from "@/components/common/Masonry";
 import { randomString } from "@/utils";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 const test = [
   randomString(),
@@ -143,18 +144,6 @@ const test = [
   randomString(),
   randomString(),
 ];
-/**
- * {Object.entries(grouped).map(([letter, items]) => (
-          <div key={letter}>
-            <p className="font-bold text-lg">{letter}</p>
-            <ul className="ml-4 list-disc">
-              {items.map((name) => (
-                <li key={name}>{name}</li>
-              ))}
-            </ul>
-          </div>
-        ))}
- */
 
 export default function Categories() {
   const [grouped, setGrouped] = useState<Record<string, string[]>>({});
@@ -182,14 +171,16 @@ export default function Categories() {
       <Masonry
         data={Object.entries(grouped)}
         colNumber={3}
-        className=""
+        orientation="vertical"
         render={([k, v]) => (
           <div key={k}>
             <p className="font-semibold">{k}</p>
             <ul className="px-4">
               {v.map((s) => (
                 <li className="list-disc">
-                  <a className="cursor-pointer">{s}</a>
+                  <Link to={`/category/${s}`} className="cursor-pointer">
+                    {s}
+                  </Link>
                 </li>
               ))}
             </ul>
