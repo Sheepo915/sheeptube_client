@@ -19,6 +19,7 @@ export default function AppBreadcrumb() {
   const location = useLocation();
   const { state } = useBreadcrumbStore();
 
+  // TODO: Need to fix logic Model page and Category page has the same breadcrumb
   function findRoute(): RouteResult | null {
     let result: RouteResult | null = null;
 
