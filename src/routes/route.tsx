@@ -2,9 +2,18 @@ import Categories from "@/pages/Categories";
 import Channel from "@/pages/Channel";
 import Home from "@/pages/Home";
 import Models from "@/pages/Models";
+import Studio from "@/pages/Studio";
 import UploadVideo from "@/pages/UploadVideo";
 import Video from "@/pages/Video";
-import { AppWindowIcon, Folder, HomeIcon, Users, VideoIcon, type LucideIcon } from "lucide-react";
+import {
+  AppWindowIcon,
+  ClapperboardIcon,
+  Folder,
+  HomeIcon,
+  Users,
+  VideoIcon,
+  type LucideIcon,
+} from "lucide-react";
 import type { RouteObject } from "react-router-dom";
 
 type RouteObjectWithState = RouteObject & {
@@ -31,6 +40,13 @@ let routes: Routes[] = [
     path: "/",
     element: <Home />,
     Icon: HomeIcon,
+  },
+  {
+    title: "Studio",
+    name: "Studio",
+    path: "/studio",
+    element: <Studio />,
+    Icon: ClapperboardIcon,
   },
   {
     title: "Video",
