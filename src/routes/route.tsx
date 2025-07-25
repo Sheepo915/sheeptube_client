@@ -1,9 +1,9 @@
-import Categories from "@/pages/Categories";
-import Channel from "@/pages/Channel";
+import Categories from "@/pages/category/Categories.tsx";
+import Channel from "@/pages/channel/Channel.tsx";
 import Home from "@/pages/Home";
-import Models from "@/pages/Models";
-import Studio from "@/pages/Studio";
-import UploadVideo from "@/pages/UploadVideo";
+import Models from "@/pages/model/Models.tsx";
+import Studio from "@/pages/studio/Studio.tsx";
+import UploadVideo from "@/pages/studio/UploadVideo.tsx";
 import Video from "@/pages/Video";
 import {
   AppWindowIcon,
@@ -14,7 +14,7 @@ import {
   VideoIcon,
   type LucideIcon,
 } from "lucide-react";
-import type { RouteObject } from "react-router-dom";
+import type {RouteObject} from "react-router-dom";
 
 type RouteObjectWithState = RouteObject & {
   title: string;
@@ -38,59 +38,62 @@ let routes: Routes[] = [
     name: "Home",
     index: true,
     path: "/",
-    element: <Home />,
+    element: <Home/>,
     Icon: HomeIcon,
   },
   {
     title: "Studio",
     name: "Studio",
     path: "/studio",
-    element: <Studio />,
+    shown: true,
+    element: <Studio/>,
     Icon: ClapperboardIcon,
+    items: [
+      {
+        title: "New Video",
+        name: "New Video",
+        path: "/upload",
+        element: <UploadVideo/>,
+        shown: false,
+      }
+    ]
   },
   {
     title: "Video",
     name: "Video",
     path: "video",
     shown: false,
-    element: <Video />,
+    element: <Video/>,
     Icon: VideoIcon,
   },
   {
     title: "Channel",
     name: "Channel",
     path: "channel",
-    shown: true,
+    shown: false,
     items: [
       {
         title: "Page",
         name: "Page",
         path: "page",
         shown: true,
-        element: <Channel />,
+        element: <Channel/>,
         Icon: AppWindowIcon,
-      },
-      {
-        title: "New Video",
-        name: "New Video",
-        path: "video",
-        element: <UploadVideo />,
-        shown: false,
-      },
+      }
     ],
   },
   {
     title: "Model",
     name: "Model",
     path: "model",
-    shown: true,
+    shown: false,
     items: [
       {
         title: "Models",
         name: "Models",
         path: "",
         shown: true,
-        element: <Models />,
+        element: <Models/>,
         Icon: Users,
       },
     ],
@@ -99,14 +102,14 @@ let routes: Routes[] = [
     title: "Category",
     name: "Category",
     path: "category",
-    shown: true,
+    shown: false,
     items: [
       {
         title: "Categories",
         name: "Categories",
         path: "",
         shown: true,
-        element: <Categories />,
+        element: <Categories/>,
         Icon: Folder,
       },
     ],
@@ -121,4 +124,4 @@ routes = routes.map((route) => {
 });
 
 export default routes;
-export type { NavWithGroup, NavWithoutGroup, Routes };
+export type {NavWithGroup, NavWithoutGroup, Routes};

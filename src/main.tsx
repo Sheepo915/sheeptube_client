@@ -12,13 +12,28 @@ createRoot(document.getElementById("root")!).render(
       <Routes>
         <Route element={<RootLayout />}>
           {routes.map((route) => {
+            if ("items" in (route as NavWithGroup) && route.shown) {
+              return (
+                <Route path={route.path}>
+                  <Route index={route.index || false} path={route.path} element={route.element} />
+                  {(route as NavWithGroup).items
+                    .map((subRoute) => {
+                      return (
+                        <Route
+                          index={subRoute.index || false}
+                          path={`${route.path}/${subRoute.path}`}
+                          element={subRoute.element}
+                        />
+                      );
+                    })}
+                </Route>
+              )
+            }
             if ("items" in (route as NavWithGroup)) {
               return (
                 <Route path={route.path}>
                   {(route as NavWithGroup).items
-                    .filter((subRoute) => subRoute.shown === true)
                     .map((subRoute) => {
-                      console.log(subRoute);
                       return (
                         <Route
                           index={subRoute.index || false}

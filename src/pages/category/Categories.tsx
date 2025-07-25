@@ -1,4 +1,4 @@
-import Masonry from "@/components/common/Masonry";
+import Masonry from "@/components/common/Masonry.tsx";
 import { randomString } from "@/utils";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";

@@ -1,12 +1,12 @@
-import {Input} from "@/components/ui/input";
-import {Separator} from "@/components/ui/separator";
-import VideoShowcase from "@/components/video/VideoShowcase";
+import {Input} from "@/components/ui/input.tsx";
+import {Separator} from "@/components/ui/separator.tsx";
+import VideoShowcase from "@/components/video/VideoShowcase.tsx";
 import {Bell, Search} from "lucide-react";
 import {useLocation, useNavigate} from "react-router-dom";
 import {motion} from "framer-motion";
-import {useEffect, useState} from "react";
-import {Button} from "@/components/ui/button";
-import {useBreadcrumbStore} from "@/stores/useBreadcrumbStore";
+import {useEffect, useRef, useState} from "react";
+import {Button} from "@/components/ui/button.tsx";
+import {useBreadcrumbStore} from "@/stores/useBreadcrumbStore.ts";
 
 const test = [
   {
@@ -215,6 +215,7 @@ const MotionInput = motion(Input);
 const MotionBell = motion(Bell);
 
 export default function Channel() {
+  const searchRef = useRef<HTMLInputElement>(null);
   const {hydrateBreadcrumb, reset} = useBreadcrumbStore();
   const navigate = useNavigate();
   const location = useLocation();
@@ -224,17 +225,27 @@ export default function Channel() {
 
   const animationDuration = 300
 
-  function OnVideoClick(title: string) {
+  function onVideoClick(title: string) {
     navigate("/video/?v=" + title);
   }
 
-  function OnSubscriptionClick() {
+  function onSubscriptionClick() {
     setIsSubscriptionAnimating(true);
     setSubscribed((v) => (!v));
     const timer = setTimeout(() => {
       setIsSubscriptionAnimating(false);
     }, animationDuration);
     timer.close()
+  }
+
+  function handleSearchExpandion() {
+    if (!searchRef.current) return
+
+    if (searchRef.current.value === "") {
+      setIsExpanded(!isExpanded);
+    } else {
+      setIsExpanded(true)
+    }
   }
 
   useEffect(() => {
@@ -281,12 +292,12 @@ export default function Channel() {
                   />
                 </Button>
                 <Separator orientation="vertical"/>
-                <Button className="rounded-l-none" onClick={OnSubscriptionClick}>
+                <Button className="rounded-l-none" onClick={onSubscriptionClick}>
                   <span>Unsubscribe</span>
                 </Button>
               </>
             ) : (
-              <Button onClick={OnSubscriptionClick}>
+              <Button onClick={onSubscriptionClick}>
                 <span>Subscribe</span>
               </Button>
             )}
@@ -300,14 +311,15 @@ export default function Channel() {
           <div className="relative flex justify-center items-center space-x-3">
             <form>
               <MotionInput
+                ref={searchRef}
                 type="search"
                 initial={{width: "32px"}}
                 animate={{
                   width: isExpanded ? "180px" : "32px",
                 }}
                 transition={{ease: "linear", duration: 0.3}}
-                onFocus={() => setIsExpanded(true)}
-                onBlur={() => setIsExpanded(false)}
+                onFocus={handleSearchExpandion}
+                onBlur={handleSearchExpandion}
                 className={isExpanded ? "pl-8" : ""}
               />
             </form>
@@ -325,7 +337,7 @@ export default function Channel() {
               views={data.views}
               channelName={data.channel.name}
               channelPic={data.channel.pic}
-              onClick={() => OnVideoClick(data.videoSrc)}
+              onClick={() => onVideoClick(data.videoSrc)}
             />
           ))}
         </div>

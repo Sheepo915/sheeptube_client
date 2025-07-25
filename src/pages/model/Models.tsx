@@ -3,7 +3,7 @@ import ModelSuspense from "@/components/model/ModelSuspense.tsx";
 import Pagination from "@/components/common/Pagination.tsx";
 import { ModelHeader, ModelShowcase } from "@/components/model";
 import { usePagination } from "@/hooks";
-import type { ModelData } from "@/types/model";
+import type { ModelData } from "@/types/model.ts";
 import { randomString } from "@/utils";
 
 const test: ModelData[] = new Array(30).fill({ id: Math.random() * 10, name: randomString(5) });

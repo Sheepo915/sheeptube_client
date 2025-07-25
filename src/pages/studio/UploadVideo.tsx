@@ -1,4 +1,4 @@
-import InputGroup from "@/components/form/InputGroup";
+import InputGroup from "@/components/form/InputGroup.tsx";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -8,9 +8,9 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
-import { AspectRatio } from "@/components/ui/aspect-ratio";
-import { Button } from "@/components/ui/button";
+} from "@/components/ui/alert-dialog.tsx";
+import { AspectRatio } from "@/components/ui/aspect-ratio.tsx";
+import { Button } from "@/components/ui/button.tsx";
 import {
   Form,
   FormControl,
@@ -18,23 +18,23 @@ import {
   FormField,
   FormItem,
   FormLabel,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Separator } from "@/components/ui/separator";
-import { Textarea } from "@/components/ui/textarea";
+} from "@/components/ui/form.tsx";
+import { Input } from "@/components/ui/input.tsx";
+import { Separator } from "@/components/ui/separator.tsx";
+import { Textarea } from "@/components/ui/textarea.tsx";
 import { Image } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { VideoMetadataSchema, type VideoMetadataSchemaType } from "@/schemas";
-import { MultiSelect } from "@/components/ui/multi-select";
-import AddTagsDialog from "@/components/dialog/AddTagDialog";
-import AddModelDialog from "@/components/dialog/AddModelDialog";
-import UploadVideoDialog from "@/components/dialog/UploadVideoDialog";
-import { useUploadStore } from "@/stores/useUploadStore";
+import { MultiSelect } from "@/components/ui/multi-select.tsx";
+import AddTagsDialog from "@/components/dialog/AddTagDialog.tsx";
+import AddModelDialog from "@/components/dialog/AddModelDialog.tsx";
+import UploadVideoDialog from "@/components/dialog/UploadVideoDialog.tsx";
+import { useUploadStore } from "@/stores/useUploadStore.ts";
 import { randomString } from "@/utils";
-import { Progress } from "@/components/ui/progress";
-import WavyText from "@/components/animated/WavyText";
+import { Progress } from "@/components/ui/progress.tsx";
+import WavyText from "@/components/animated/WavyText.tsx";
 
 const alertContents = {
   title: "Replace thumbnail?",

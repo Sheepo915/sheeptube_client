@@ -9,17 +9,17 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import routes, { type NavWithGroup, type NavWithoutGroup } from "@/routes/route";
-import { Link, useLocation } from "react-router-dom";
+import routes, {type NavWithGroup, type NavWithoutGroup} from "@/routes/route";
+import {Link, useLocation} from "react-router-dom";
 import SidebarAccount from "@/components/app/SidebarAccount";
 
-export default function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+export default function AppSidebar({...props}: React.ComponentProps<typeof Sidebar>) {
   const location = useLocation();
 
   return (
     <Sidebar {...props}>
       <SidebarHeader>
-        <SidebarAccount />
+        <SidebarAccount/>
       </SidebarHeader>
       <SidebarContent>
         <SidebarMenu className="px-2">
@@ -35,7 +35,7 @@ export default function AppSidebar({ ...props }: React.ComponentProps<typeof Sid
                   className="data-[slot=sidebar-menu-button]:!p-1.5"
                 >
                   <Link to={route.path as string}>
-                    {route.Icon && <route.Icon className="!size-5" />}
+                    {route.Icon && <route.Icon className="!size-5"/>}
                     <span className="text-base ">{route.title}</span>
                   </Link>
                 </SidebarMenuButton>
@@ -44,32 +44,52 @@ export default function AppSidebar({ ...props }: React.ComponentProps<typeof Sid
         </SidebarMenu>
         {/* Render grouped menu items */}
         {routes
-          .filter((route): route is NavWithGroup => "items" in route && route.shown === true)
-          .map((route) => (
-            <SidebarGroup key={route.title}>
-              <SidebarGroupLabel>{route.title}</SidebarGroupLabel>
-              <SidebarGroupContent>
-                <SidebarMenu>
-                  {route.items
-                    .filter((subRoute) => subRoute.shown === true)
-                    .map((item) => (
-                      <SidebarMenuItem key={item.title}>
+          .filter((route): route is NavWithGroup => "items" in route && (route.items.some((item) => item.shown === true) || route.shown === true))
+          .map((route) => {
+            const showParent = route.shown === true;
+            const showChildren = route.items.some((item) => item.shown === true);
+            const hasLink = showParent && route.element;
+
+            return (
+              <SidebarGroup key={route.title}>
+                <SidebarGroupLabel>{route.title}</SidebarGroupLabel>
+                <SidebarGroupContent>
+                  <SidebarMenu>
+                    {hasLink && (
+                      <SidebarMenuItem key={route.title}>
                         <SidebarMenuButton
                           asChild
-                          isActive={location.pathname === route.path + "/" + item.path}
+                          isActive={location.pathname === route.path}
                           className="data-[slot=sidebar-menu-button]:!p-1.5"
                         >
-                          <Link to={(route.path + "/" + item.path) as string}>
-                            {item.Icon && <item.Icon className="!size-5" />}
-                            <span className="text-base ">{item.title}</span>
+                          <Link to={route.path as string}>
+                            {route.Icon && <route.Icon className="!size-5"/>}
+                            <span className="text-base ">{route.title}</span>
                           </Link>
                         </SidebarMenuButton>
                       </SidebarMenuItem>
-                    ))}
-                </SidebarMenu>
-              </SidebarGroupContent>
-            </SidebarGroup>
-          ))}
+                    )}
+                    {showChildren && route.items
+                      .filter((subRoute) => subRoute.shown === true)
+                      .map((item) => (
+                        <SidebarMenuItem key={item.title}>
+                          <SidebarMenuButton
+                            asChild
+                            isActive={location.pathname === route.path + "/" + item.path}
+                            className="data-[slot=sidebar-menu-button]:!p-1.5"
+                          >
+                            <Link to={(route.path + "/" + item.path) as string}>
+                              {item.Icon && <item.Icon className="!size-5"/>}
+                              <span className="text-base ">{item.title}</span>
+                            </Link>
+                          </SidebarMenuButton>
+                        </SidebarMenuItem>
+                      ))}
+                  </SidebarMenu>
+                </SidebarGroupContent>
+              </SidebarGroup>
+            )
+          })}
       </SidebarContent>
     </Sidebar>
   );
