@@ -1,12 +1,12 @@
-import { Input } from "@/components/ui/input";
-import { Separator } from "@/components/ui/separator";
+import {Input} from "@/components/ui/input";
+import {Separator} from "@/components/ui/separator";
 import VideoShowcase from "@/components/video/VideoShowcase";
-import { Bell, Search } from "lucide-react";
-import { useLocation, useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
-import { useBreadcrumbStore } from "@/stores/useBreadcrumbStore";
+import {Bell, Search} from "lucide-react";
+import {useLocation, useNavigate} from "react-router-dom";
+import {motion} from "framer-motion";
+import {useEffect, useState} from "react";
+import {Button} from "@/components/ui/button";
+import {useBreadcrumbStore} from "@/stores/useBreadcrumbStore";
 
 const test = [
   {
@@ -215,22 +215,30 @@ const MotionInput = motion(Input);
 const MotionBell = motion(Bell);
 
 export default function Channel() {
-  const { hydrateBreadcrumb, reset } = useBreadcrumbStore();
+  const {hydrateBreadcrumb, reset} = useBreadcrumbStore();
   const navigate = useNavigate();
   const location = useLocation();
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
   const [isSubscribed, setSubscribed] = useState<boolean>(false);
+  const [isSubscriptionAnimating, setIsSubscriptionAnimating] = useState<boolean>(false);
+
+  const animationDuration = 300
 
   function OnVideoClick(title: string) {
     navigate("/video/?v=" + title);
   }
 
   function OnSubscriptionClick() {
-    setSubscribed(true);
+    setIsSubscriptionAnimating(true);
+    setSubscribed((v) => (!v));
+    const timer = setTimeout(() => {
+      setIsSubscriptionAnimating(false);
+    }, animationDuration);
+    timer.close()
   }
 
   useEffect(() => {
-    hydrateBreadcrumb({ path: location.pathname, name: "Test" });
+    hydrateBreadcrumb({path: location.pathname, name: "Test"});
 
     return () => {
       reset();
@@ -241,7 +249,7 @@ export default function Channel() {
     <>
       <section className="h-72 w-full flex items-center px-12 gap-x-8">
         <div className="size-32 rounded-full overflow-hidden object-cover">
-          <img src="https://github.com/shadcn.png" />
+          <img src="https://github.com/shadcn.png"/>
         </div>
         <div className="h-30 w-[40rem] grid grid-cols-1 grid-rows-[1rem_1.5rem_auto] gap-y-3">
           <div className="font-bold">Channel Name</div>
@@ -250,29 +258,42 @@ export default function Channel() {
             saepe sint necessitatibus eligendi officia eius atque perspiciatis. Obcaecati excepturi
             deserunt tempora nostrum dolores, quidem autem laboriosam debitis numquam.
           </div>
-          <div>
+          <motion.div
+            initial={{scaleX: 1}}
+            animate={{scale: isSubscriptionAnimating ? 0.9 : 1, x: isSubscriptionAnimating ? -5 : 0}}
+            transition={{
+              delay: animationDuration / 100,
+              duration: animationDuration / 100,
+              ease: "easeOut",
+            }}
+            className="flex h-fit origin-left">
             {isSubscribed ? (
-              <Button>
-                <MotionBell
-                  initial={{ rotate: 0 }}
-                  animate={{ rotate: [0, -15, 15, -10, 10, -5, 5, 0] }}
-                  transition={{
-                    duration: 1,
-                    ease: "easeInOut",
-                  }}
-                />
-                <Separator orientation="vertical" />
-                <span>Subscribed</span>
-              </Button>
+              <>
+                <Button className="rounded-r-none">
+                  <MotionBell
+                    initial={{rotate: 0}}
+                    animate={{rotate: [0, -15, 15, -10, 10, -5, 5, 0]}}
+                    transition={{
+                      delay: (animationDuration / 100) * 2,
+                      duration: 1,
+                      ease: "easeInOut",
+                    }}
+                  />
+                </Button>
+                <Separator orientation="vertical"/>
+                <Button className="rounded-l-none" onClick={OnSubscriptionClick}>
+                  <span>Unsubscribe</span>
+                </Button>
+              </>
             ) : (
               <Button onClick={OnSubscriptionClick}>
                 <span>Subscribe</span>
               </Button>
             )}
-          </div>
+          </motion.div>
         </div>
       </section>
-      <Separator orientation="horizontal" />
+      <Separator orientation="horizontal"/>
       <section>
         <div className="flex flex-1 justify-between items-center pt-3">
           <div className="pl-3">All Videos</div>
@@ -280,17 +301,18 @@ export default function Channel() {
             <form>
               <MotionInput
                 type="search"
-                initial={{ width: "32px" }}
+                initial={{width: "32px"}}
                 animate={{
                   width: isExpanded ? "180px" : "32px",
                 }}
-                transition={{ ease: "linear", duration: 0.3 }}
+                transition={{ease: "linear", duration: 0.3}}
                 onFocus={() => setIsExpanded(true)}
                 onBlur={() => setIsExpanded(false)}
                 className={isExpanded ? "pl-8" : ""}
               />
             </form>
-            <Search className="pointer-events-none absolute top-1/2 left-2 size-4 -translate-y-1/2 opacity-50 select-none" />
+            <Search
+              className="pointer-events-none absolute top-1/2 left-2 size-4 -translate-y-1/2 opacity-50 select-none"/>
           </div>
         </div>
         <div className="grid grid-cols-4 gap-x-2 gap-y-3 px-3 py-2">
@@ -310,4 +332,4 @@ export default function Channel() {
       </section>
     </>
   );
-}
+};
