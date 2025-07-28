@@ -4,6 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs.t
 import { UploadIcon } from "lucide-react";
 import {useNavigate} from "react-router-dom";
 import StudioDashboard from "@/pages/studio/StudioDashboard.tsx";
+import StudioVideos from "@/pages/studio/StudioVideos.tsx";
 
 export default function Studio() {
   const navigate = useNavigate();
@@ -35,7 +36,9 @@ export default function Studio() {
           <TabsContent value="dashboard">
             <StudioDashboard/>
           </TabsContent>
-          <TabsContent value="videos">Change your password here.</TabsContent>
+          <TabsContent value="videos">
+            <StudioVideos/>
+          </TabsContent>
         </Tabs>
       </section>
     </>
